@@ -1,3 +1,4 @@
+import 'package:edtech/core/constance/constance.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -31,10 +32,10 @@ class RegisterScreen extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(
-                    height: 52,
+                    height: 102,
                   ),
                   Text(
-                    'Hey there,',
+                    'Hey there',
                     textAlign: TextAlign.center,
                     style: GoogleFonts.inter(
                       fontSize: 15,
@@ -42,37 +43,8 @@ class RegisterScreen extends ConsumerWidget {
                       color: AppColors.blackcolor,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 22,
-                  ),
-                  Stack(
-                    children: [
-                      authController.image == null
-                          ? const CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                'https://png.pngitem.com/pimgs/s/649-6490124_katie-notopoulos-katienotopoulos-i-write-about-tech-round.png',
-                              ),
-                              radius: 64,
-                            )
-                          : CircleAvatar(
-                              backgroundImage: FileImage(
-                                authController.image!,
-                              ),
-                              radius: 64,
-                            ),
-                      Positioned(
-                        bottom: -10,
-                        left: 80,
-                        child: IconButton(
-                          onPressed: () {
-                            authController.selectImage(context);
-                          },
-                          icon: const Icon(
-                            Icons.add_a_photo,
-                          ),
-                        ),
-                      ),
-                    ],
                   ),
                   customTextField(
                     controller: userName,
@@ -109,7 +81,7 @@ class RegisterScreen extends ConsumerWidget {
                         email: emailcontroller.text,
                         phone: phonenumbercontroller.text,
                         address: adddressController.text,
-                        profilePicUrl: '',
+
                       );
 
                       // Call the signUp function from AuthController
@@ -132,11 +104,41 @@ class RegisterScreen extends ConsumerWidget {
                       ),
                       child: const Center(
                         child: Text(
-                          'Register',
+                          '$SIGNUP',
                           style: TextStyle(fontSize: 16, color: Colors.white),
                         ),
                       ),
                     ),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+
+                        },
+                        child: const Center(
+                          child: Text(
+                            '$ALREADYHAVEANACCOUNT ',
+                            style: TextStyle(fontSize: 16, color: Colors.black),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+
+                        },
+                        child: const Center(
+                          child: Text(
+                            '$SIGNIN',
+                            style: TextStyle(fontSize: 16, color: Colors.black,decoration: TextDecoration.underline),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(
                     height: 45,

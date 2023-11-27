@@ -10,11 +10,6 @@ class AuthRepository {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   FirebaseStorage firebaseStorage = FirebaseStorage.instance;
-  File? image;
-
-   selectImage(BuildContext context) async {
-    image = await pickImageFromGallery(context);
-  }
 
   Future<void> signUp(UserModel user, String password) async {
     try {
@@ -22,12 +17,6 @@ class AuthRepository {
         email: user.email,
         password: password,
       );
-      if (image != null) {
-        String imageUrl = await storeFileToFirebase(
-            'profile_pics/${_auth.currentUser!.uid}', image!);
-        user = user.copyWith(
-            profilePicUrl: imageUrl); // Update the UserModel with the image URL
-      }
       await _saveUserInfoToFirestore(user);
     } catch (e) {
       rethrow;
@@ -43,15 +32,6 @@ class AuthRepository {
       'email': user.email,
       'phone': user.phone,
       'address': user.address,
-      'profilePicUrl': user.profilePicUrl,
     });
   }
-
-  Future storeFileToFirebase(String ref, File profilePic) async {
-    UploadTask uploadTask = firebaseStorage.ref().child(ref).putFile(profilePic);
-    TaskSnapshot snap = await uploadTask;
-    String downloadUrl = await snap.ref.getDownloadURL();
-    return downloadUrl;
-  }
-
 }

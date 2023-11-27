@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:edtech/features/dashboard/presentation/dashboard_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -17,10 +18,7 @@ class AuthController extends ChangeNotifier {
   bool _isLoader = false;
   bool get isLoader => _isLoader;
 
-  Future<void> selectImage(BuildContext context) async {
-    await _authRepository.selectImage(context);
-    notifyListeners();
-  }
+
 
   Future<void> signUp(
       UserModel user, String password, BuildContext context) async {
@@ -38,6 +36,7 @@ class AuthController extends ChangeNotifier {
           textColor: Colors.white,
           fontSize: 16.0);
       notifyListeners();
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=> const DashBoardPage()));
     } catch (e) {
       String errorMessage = e.toString();
       if (e is FirebaseException) {

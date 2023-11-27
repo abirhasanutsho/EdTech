@@ -1,6 +1,8 @@
+import 'package:edtech/features/dashboard/presentation/dashboard_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'core/constance/constance.dart';
 import 'features/auth/presentation/screens/sign_up_screen.dart';
 import 'firebase_options.dart';
 
@@ -23,7 +25,7 @@ class App extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
         useMaterial3: true,
       ),
-      home: RegisterScreen(),
+      home: user == null ? const DashBoardPage() : RegisterScreen(),
     );
   }
 }
