@@ -43,7 +43,7 @@ dependencies:
   firebase_storage: ^11.5.2
 
   # State Management Package
-  riverpod: ^2.4.8
+
   flutter_riverpod: ^2.4.8
 
   # Date Time Package
@@ -54,9 +54,6 @@ dependencies:
 
   # Flutter Toast
   fluttertoast: ^8.2.4
-
-  #No Internet Connection
-  connectivity_plus: ^5.0.2
 
   #Local Notification
   flutter_local_notifications: ^16.2.0

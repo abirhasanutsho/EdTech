@@ -1,68 +1,150 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-
+import '../../../../core/constance/utils.dart';
+import '../../data/components/auth_component.dart';
 import '../../data/models/user_models.dart';
-import '../../domain/provider/auth_provider.dart'; // Import your UserModel file
+import '../../domain/provider/auth_provider.dart';
 
-class SignUpScreen extends ConsumerWidget {
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+class RegisterScreen extends ConsumerWidget {
+  final TextEditingController userName = TextEditingController();
+  final TextEditingController emailcontroller = TextEditingController();
+  final TextEditingController passwordcontroller = TextEditingController();
+  final TextEditingController phonenumbercontroller = TextEditingController();
+  final TextEditingController adddressController = TextEditingController();
 
   @override
-  Widget build(BuildContext context, WidgetRef  ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final authController = ref.watch(authControllerProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Sign Up'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextFormField(
-              controller: _nameController,
-              decoration: InputDecoration(labelText: 'Name'),
-            ),
-            TextFormField(
-              controller: _emailController,
-              decoration: InputDecoration(labelText: 'Email'),
-            ),
-            TextFormField(
-              controller: _phoneController,
-              decoration: InputDecoration(labelText: 'Phone'),
-            ),
-            TextFormField(
-              controller: _addressController,
-              decoration: InputDecoration(labelText: 'Address'),
-            ),
-            TextFormField(
-              controller: _passwordController,
-              decoration: InputDecoration(labelText: 'Password'),
-              obscureText: true,
-            ),
-            SizedBox(height: 20),
-            authController.state ? Center(child: CircularProgressIndicator(),) : ElevatedButton(
-              onPressed: () {
-                // Create a UserModel using the entered data
-                final newUser = UserModel(
-                  name: _nameController.text,
-                  email: _emailController.text,
-                  phone: _phoneController.text,
-                  address: _addressController.text,
-                );
+      backgroundColor: AppColors.whitecolor,
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 30.0,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(
+                    height: 52,
+                  ),
+                  Text(
+                    'Hey there,',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.inter(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.blackcolor,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 22,
+                  ),
+                  Stack(
+                    children: [
+                      authController.image == null
+                          ? const CircleAvatar(
+                              backgroundImage: NetworkImage(
+                                'https://png.pngitem.com/pimgs/s/649-6490124_katie-notopoulos-katienotopoulos-i-write-about-tech-round.png',
+                              ),
+                              radius: 64,
+                            )
+                          : CircleAvatar(
+                              backgroundImage: FileImage(
+                                authController.image!,
+                              ),
+                              radius: 64,
+                            ),
+                      Positioned(
+                        bottom: -10,
+                        left: 80,
+                        child: IconButton(
+                          onPressed: () {
+                            authController.selectImage(context);
+                          },
+                          icon: const Icon(
+                            Icons.add_a_photo,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  customTextField(
+                    controller: userName,
+                    hintText: 'User Name',
+                    iconName: Icons.person_outline,
+                  ),
+                  customTextField(
+                    controller: emailcontroller,
+                    hintText: 'Email',
+                    iconName: Icons.message_outlined,
+                  ),
+                  customTextField(
+                    controller: phonenumbercontroller,
+                    hintText: 'Phone',
+                    iconName: Icons.phone,
+                  ),
+                  customTextField(
+                    controller: adddressController,
+                    hintText: 'Address',
+                    iconName: Icons.work_outline,
+                  ),
+                  PasswordTextField(
+                    hintText: 'Password',
+                    iconName: Icons.lock_outline,
+                    controller: passwordcontroller,
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      final newUser = UserModel(
+                        name: userName.text,
+                        email: emailcontroller.text,
+                        phone: phonenumbercontroller.text,
+                        address: adddressController.text,
+                        profilePicUrl: '',
+                      );
 
-                // Call the signUp function from AuthController
-                authController.signUp(newUser, _passwordController.text, context);
-              },
-              child: Text('Sign Up'),
+                      // Call the signUp function from AuthController
+                      authController.signUp(
+                          newUser, passwordcontroller.text, context);
+                    },
+                    child: Container(
+                      width: 315,
+                      height: 54,
+                      decoration: BoxDecoration(
+                        color: AppColors.buttoncolor,
+                        borderRadius: BorderRadius.circular(99),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color(0x4c95adfe),
+                            offset: Offset(0, 10),
+                            blurRadius: 30,
+                          ),
+                        ],
+                      ),
+                      child: const Center(
+                        child: Text(
+                          'Register',
+                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 45,
+                  ),
+                ],
+              ),
             ),
-          ],
+          ),
         ),
       ),
     );
