@@ -1,12 +1,11 @@
 import 'package:edtech/core/constance/constance.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/constance/utils.dart';
 import '../../data/components/auth_component.dart';
-import '../../data/models/user_models.dart';
-import '../../domain/provider/auth_provider.dart';
 
 class RegisterScreen extends ConsumerWidget {
   final TextEditingController userName = TextEditingController();
@@ -15,10 +14,10 @@ class RegisterScreen extends ConsumerWidget {
   final TextEditingController phonenumbercontroller = TextEditingController();
   final TextEditingController adddressController = TextEditingController();
 
+  RegisterScreen({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authController = ref.watch(authControllerProvider);
-
     return Scaffold(
       backgroundColor: AppColors.whitecolor,
       body: SingleChildScrollView(
@@ -71,55 +70,61 @@ class RegisterScreen extends ConsumerWidget {
                     iconName: Icons.lock_outline,
                     controller: passwordcontroller,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      final newUser = UserModel(
-                        name: userName.text,
-                        email: emailcontroller.text,
-                        phone: phonenumbercontroller.text,
-                        address: adddressController.text,
+                  // Consumer(builder: (context,state,child){
+                  //   final data = state.watch(authControllerProvider);
+                  //   return  data.isLoader
+                  //       ? Center(
+                  //     child: CircularProgressIndicator(color: AppColors.whitecolor,),
+                  //   )
+                  //       : GestureDetector(
+                  //     onTap: () {
+                  //       final newUser = UserModel(
+                  //         name: userName.text,
+                  //         email: emailcontroller.text,
+                  //         phone: phonenumbercontroller.text,
+                  //         address: adddressController.text,
+                  //       );
+                  //
+                  //       // Call the signUp function from AuthController
+                  //       authController.signUp(
+                  //           newUser, passwordcontroller.text, context);
+                  //     },
+                  //     child: Container(
+                  //       width: 315,
+                  //       height: 54,
+                  //       decoration: BoxDecoration(
+                  //         color: AppColors.buttoncolor,
+                  //         borderRadius: BorderRadius.circular(99),
+                  //         boxShadow: const [
+                  //           BoxShadow(
+                  //             color: Color(0x4c95adfe),
+                  //             offset: Offset(0, 10),
+                  //             blurRadius: 30,
+                  //           ),
+                  //         ],
+                  //       ),
+                  //       child: const Center(
+                  //         child: Text(
+                  //           '$SIGNUP',
+                  //           style: TextStyle(
+                  //               fontSize: 16, color: Colors.white),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   );
+                  // }),
 
-                      );
-
-                      // Call the signUp function from AuthController
-                      authController.signUp(
-                          newUser, passwordcontroller.text, context);
-                    },
-                    child: Container(
-                      width: 315,
-                      height: 54,
-                      decoration: BoxDecoration(
-                        color: AppColors.buttoncolor,
-                        borderRadius: BorderRadius.circular(99),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Color(0x4c95adfe),
-                            offset: Offset(0, 10),
-                            blurRadius: 30,
-                          ),
-                        ],
-                      ),
-                      child: const Center(
-                        child: Text(
-                          '$SIGNUP',
-                          style: TextStyle(fontSize: 16, color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       GestureDetector(
-                        onTap: () {
-
-                        },
+                        onTap: () {},
                         child: const Center(
                           child: Text(
                             '$ALREADYHAVEANACCOUNT ',
@@ -128,13 +133,14 @@ class RegisterScreen extends ConsumerWidget {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {
-
-                        },
+                        onTap: () {},
                         child: const Center(
                           child: Text(
                             '$SIGNIN',
-                            style: TextStyle(fontSize: 16, color: Colors.black,decoration: TextDecoration.underline),
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                                decoration: TextDecoration.underline),
                           ),
                         ),
                       ),

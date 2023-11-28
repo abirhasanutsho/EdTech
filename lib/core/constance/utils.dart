@@ -9,7 +9,7 @@ class AppColors {
   static Color primarycolor = const Color(0xFF0d1d2b);
   static Color backgroundcolor = const Color(0xFFf9f9fa);
   static Color textprimarycolor = const Color(0xFF111827);
-  static Color buttoncolor = const Color(0xff28e7fb);
+  static Color buttoncolor =  Colors.indigo;
   static Color selectioncolor = const Color(0xFF17314a);
   static Color lightgreycolor = const Color(0xFFf7f8f8);
   static Color blackcolor = Colors.black;

@@ -1,60 +1,50 @@
-import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:edtech/features/dashboard/presentation/dashboard_page.dart';
+import 'package:edtech/features/auth/domain/repositories/auth_repositories.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-
-import '../../data/models/user_models.dart';
-import '../repositories/repositories.dart';
 
 class AuthController extends ChangeNotifier {
-  final AuthRepository _authRepository;
+  bool _isLoading = false;
+  UserCredential? _userCredential;
+  Map<String, dynamic> _userData = {};
+  AuthRepository authRepository = AuthRepository();
 
-  AuthController(this._authRepository);
+  bool get isLoader => _isLoading;
+  UserCredential? get userCredential => _userCredential;
+  Map<String, dynamic> get userData => _userData;
 
+  setLoader(bool loader) {
+    _isLoading= loader;
+    notifyListeners();
+  }
 
-  bool _isLoader = false;
-  bool get isLoader => _isLoader;
-
-
-
-  Future<void> signUp(
-      UserModel user, String password, BuildContext context) async {
+  Future<UserCredential?> loginUserProvider(String email, String password)async {
+    setLoader(true);
     try {
-      _isLoader = true; // Set loading state
 
-      await _authRepository.signUp(user, password);
+      _userCredential = await authRepository.loginWithUserFirebase(email, password);
+      setLoader(false);
+      return _userCredential;
 
-      Fluttertoast.showToast(
-          msg: "SignUp Successfully",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-          fontSize: 16.0);
-      notifyListeners();
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=> const DashBoardPage()));
     } catch (e) {
-      String errorMessage = e.toString();
-      if (e is FirebaseException) {
-        errorMessage = e.message ?? 'An error occurred during SignUp';
-      }
-
-      // Show error message
-      Fluttertoast.showToast(
-          msg: errorMessage,
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
-    } finally {
-      _isLoader = false; // Reset loading state
-      notifyListeners();
+      setLoader(false);
+      return Future.error(e.toString());
     }
   }
+
+
+  Future<UserCredential?> signUpUserProvider(String email, String password,
+      String address, String userName, String phoneNumber)async {
+    setLoader(true);
+    try {
+
+      _userCredential = await authRepository.signUpWithFirebase(email, password, address, userName, phoneNumber);
+      setLoader(false);
+      return _userCredential;
+
+    } catch (e) {
+      setLoader(false);
+      return Future.error(e.toString());
+    }
+  }
+
 }

@@ -4,13 +4,11 @@ class UserModel {
   final String phone;
   final String address;
 
-
   UserModel({
     required this.name,
     required this.email,
     required this.phone,
     required this.address,
-
   });
 
   // Add a copyWith method to create a new instance with updated values
@@ -19,7 +17,6 @@ class UserModel {
     String? email,
     String? phone,
     String? address,
-
   }) {
     return UserModel(
       name: name ?? this.name,
