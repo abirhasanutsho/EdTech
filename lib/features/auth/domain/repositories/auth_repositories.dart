@@ -1,4 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
+
+import '../../data/models/user_models.dart';
 import '../../data/service/firebase_services.dart';
 
 class AuthRepository extends FirebaseServices {
@@ -22,11 +24,13 @@ class AuthRepository extends FirebaseServices {
   }
 
   @override
-  Future<UserCredential> signUpWithFirebase(String email, String password,
-      String address, String userName, String phoneNumber) async {
+  Future<UserCredential> signUpWithFirebase(
+      UserModel userModel, String password) async {
     final userSignUp = await auth.createUserWithEmailAndPassword(
-        email: email, password: password);
+        email: userModel.email, password: password);
     return userSignUp;
   }
+
+
 
 }

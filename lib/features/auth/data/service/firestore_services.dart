@@ -1,8 +1,11 @@
 abstract class FireStoreServices {
   Future addUserDataFireStore(
     Map<String, dynamic> data,
-    String userName,
-    String address,
-    String phoneNumber,
+    String collectionName,
+    String docName,
   );
+
+
+  Future getUserDataFromFireStore(String collectionName,String docName);
+
 }

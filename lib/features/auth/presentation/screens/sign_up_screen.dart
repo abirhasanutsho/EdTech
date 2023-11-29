@@ -1,4 +1,6 @@
 import 'package:edtech/core/constance/constance.dart';
+import 'package:edtech/features/auth/domain/provider/auth_provider.dart';
+import 'package:edtech/features/dashboard/presentation/dashboard_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -6,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/constance/utils.dart';
 import '../../data/components/auth_component.dart';
+import '../../data/models/user_models.dart';
 
 class RegisterScreen extends ConsumerWidget {
   final TextEditingController userName = TextEditingController();
@@ -18,6 +21,7 @@ class RegisterScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final authController = ref.watch(authProvider);
     return Scaffold(
       backgroundColor: AppColors.whitecolor,
       body: SingleChildScrollView(
@@ -73,50 +77,53 @@ class RegisterScreen extends ConsumerWidget {
                   const SizedBox(
                     height: 30,
                   ),
-                  // Consumer(builder: (context,state,child){
-                  //   final data = state.watch(authControllerProvider);
-                  //   return  data.isLoader
-                  //       ? Center(
-                  //     child: CircularProgressIndicator(color: AppColors.whitecolor,),
-                  //   )
-                  //       : GestureDetector(
-                  //     onTap: () {
-                  //       final newUser = UserModel(
-                  //         name: userName.text,
-                  //         email: emailcontroller.text,
-                  //         phone: phonenumbercontroller.text,
-                  //         address: adddressController.text,
-                  //       );
-                  //
-                  //       // Call the signUp function from AuthController
-                  //       authController.signUp(
-                  //           newUser, passwordcontroller.text, context);
-                  //     },
-                  //     child: Container(
-                  //       width: 315,
-                  //       height: 54,
-                  //       decoration: BoxDecoration(
-                  //         color: AppColors.buttoncolor,
-                  //         borderRadius: BorderRadius.circular(99),
-                  //         boxShadow: const [
-                  //           BoxShadow(
-                  //             color: Color(0x4c95adfe),
-                  //             offset: Offset(0, 10),
-                  //             blurRadius: 30,
-                  //           ),
-                  //         ],
-                  //       ),
-                  //       child: const Center(
-                  //         child: Text(
-                  //           '$SIGNUP',
-                  //           style: TextStyle(
-                  //               fontSize: 16, color: Colors.white),
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   );
-                  // }),
+                  authController.isLoader
+                      ? Center(
+                          child: CircularProgressIndicator(
+                            color: AppColors.buttoncolor,
+                          ),
+                        )
+                      : GestureDetector(
+                          onTap: () {
+                            final newUser = UserModel(
+                              name: userName.text,
+                              email: emailcontroller.text,
+                              phone: phonenumbercontroller.text,
+                              address: adddressController.text,
+                            );
 
+                            // Call the signUp function from AuthController
+                            authController.signUpUserProvider(
+                              newUser,
+                              passwordcontroller.text,
+                            ).then((value) {
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=> const DashBoardPage()));
+                            });
+
+                          },
+                          child: Container(
+                            width: 315,
+                            height: 54,
+                            decoration: BoxDecoration(
+                              color: AppColors.buttoncolor,
+                              borderRadius: BorderRadius.circular(99),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Color(0x4c95adfe),
+                                  offset: Offset(0, 10),
+                                  blurRadius: 30,
+                                ),
+                              ],
+                            ),
+                            child: const Center(
+                              child: Text(
+                                '$SIGNUP',
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ),
                   const SizedBox(
                     height: 30,
                   ),
